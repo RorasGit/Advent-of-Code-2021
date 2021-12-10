@@ -1,6 +1,7 @@
 from functools import reduce
 import operator
-def access(obj, indexes):
+import math
+def value(obj, indexes):
     def _get_item(subobj, index): 
         if isinstance(subobj, list) and index < len(subobj):
             return subobj[index]
@@ -10,7 +11,7 @@ def access(obj, indexes):
 def inbound(x, y):
     return 0 <= x < width and 0 <= y < height
 
-def findLowpoints(grid):
+def find_lowpoints(grid):
     lowpoints = []
     for i in range(height):
         for j in range (width):
@@ -20,23 +21,22 @@ def findLowpoints(grid):
     
 def lowpoint(point, grid):
     for newDir in [tuple(map(operator.add, dir, point)) for dir in dir]:
-        if(inbound(*newDir) and access(grid, newDir) <= access(grid, point)):
+        if(inbound(*newDir) and value(grid, newDir) <= value(grid, point)):
             return False
     return True
 
-def findBasin (lowpoint):
-    neighbours = []   
-    findNeighbours(lowpoint, neighbours)
-    return sum(1 for n in neighbours if access(grid, n) < 9)
-    
-def findNeighbours (point, neighbours):
+def find_basin (lowpoint):
+    def _find_neighbours (point, neighbours): 
         if(point not in neighbours): 
             neighbours.append(point)
-            if(access(grid, point) != 9):
-                for newDir in [tuple(map(operator.add, dir, point)) for dir in dir]:
-                    if(inbound(*newDir)):
-                        findNeighbours(newDir, neighbours)
-                
+            if(value(grid, point) != 9):
+                for newPoint in [tuple(map(operator.add, dir, point)) for dir in dir]:
+                    if(inbound(*newPoint)):
+                        _find_neighbours(newPoint, neighbours)
+
+    neighbours = []   
+    _find_neighbours(lowpoint, neighbours)
+    return sum(1 for n in neighbours if value(grid, n) < 9)
      
 with open("input.txt") as f:
     
@@ -48,10 +48,9 @@ with open("input.txt") as f:
     width = len(grid[0])
     dir = [(1,0),(-1,0), (0,1), (0,-1)]
 
-    lowpoints = findLowpoints(grid)
-    print(sum(access(grid, point)+1 for point in lowpoints))
+    lowpoints = find_lowpoints(grid)
+    print(sum(value(grid, point)+1 for point in lowpoints))
 
-    basins = [findBasin(point) for point in lowpoints]
-    basins.sort()
-    print(basins[-3]*basins[-2]*basins[-1])
-
+    basins = [find_basin(point) for point in lowpoints]
+    basins.sort(reverse=True)
+    print(math.prod(basins[:3]))
