@@ -1,6 +1,6 @@
 from collections import Counter
 
-values = {")": 3, "]":57, "}": 1197, ">":25137, "(": 1, "[":2, "{": 3, "<":4}
+values = {")": 3, "]":57, "}": 1197, ">": 25137, "(": 1, "[":2, "{": 3, "<": 4}
 
 def value(line):
     sum=0
@@ -12,7 +12,6 @@ with open("input.txt") as f:
     
     chunks = f.read().splitlines()
     types = {"(":")", "{":"}", "<":">", "[": "]"}
-    failedRows = Counter()
     failedSum = 0
     unfinished = []
     
@@ -30,8 +29,7 @@ with open("input.txt") as f:
         if(ok):
             unfinished.append(closeable)        
 
-    sums = [value([x for x in line[::-1]]) for line in unfinished]
-    sums.sort()
+    incompleteSum = sorted([value(reversed(line)) for line in unfinished])
 
     print(failedSum)
-    print(sums[len(sums)//2])
+    print(incompleteSum[len(incompleteSum)//2])
