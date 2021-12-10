@@ -19,5 +19,5 @@ with open("input.txt") as f:
     
     scores = [score(line) for line in f.read().splitlines()]       
 
-    print(sum([score for corrupted, score in scores if corrupted]))
-    print(median([score for corrupted, score in scores if not corrupted]))
+    print(sum(score for corrupted, score in scores if corrupted))
+    print(median(score for corrupted, score in scores if not corrupted))
