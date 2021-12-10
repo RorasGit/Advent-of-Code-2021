@@ -1,5 +1,3 @@
-from collections import Counter
-
 values = {")": 3, "]":57, "}": 1197, ">": 25137, "(": 1, "[":2, "{": 3, "<": 4}
 
 def value(line):
