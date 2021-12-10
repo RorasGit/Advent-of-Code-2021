@@ -18,55 +18,30 @@ def value2(S):
 
 with open("input.txt") as f:
     
-    types = {")":"(", "}":"{", ">":"<", "]": "["}
-    fail = ""
-
     chunks = f.read().splitlines()
-    for line in chunks:
-        closeable = []
-        open = {"(":0, "{":0, "<":0, "[": 0}
-        for c in line:
-            if c in types.values():
-                open[c] += 1
-                closeable.append(c)
-            else:
-                if types[c] == closeable[-1]:
-                    if open[types[c]] > 0:
-                        open[types[c]] -= 1
-                        closeable.pop()
-                    else:
-                        fail +=c
-                        break
-                else:
-                    fail += c
-                    break
-    print(value(fail))
-
-    unfinished = []
+    types = {")":"(", "}":"{", ">":"<", "]": "["}
     typesInv = {v: k for k, v in types.items()}
+    fail = ""
+    unfinished = []
+    
     for line in chunks:
         closeable = []
-        open = {"(":0, "{":0, "<":0, "[": 0}
         ok = True
         for c in line:
             if c in types.values():
-                open[c] += 1
                 closeable.append(c)
             else:
                 if types[c] == closeable[-1]:
-                    if open[types[c]] > 0:
-                        open[types[c]] -= 1
-                        closeable.pop()
-                    else:
-                        ok = False
-                        break
+                    closeable.pop()
                 else:
                     ok = False
+                    fail += c
                     break
         if(ok):
             unfinished.append(closeable)        
-        
-    
+
     sums = [value2([typesInv[x] for x in line[::-1]]) for line in unfinished]
     sums.sort()
+
+    print(value(fail))
     print(sums[len(sums)//2])
