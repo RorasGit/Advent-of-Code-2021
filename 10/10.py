@@ -10,9 +10,8 @@ def score(line):
     for c in line:
         if c in chunk:
             openedChunks.append(c)
-        else:
-            if chunk[openedChunks.pop()] != c:
-                return True, value[c]
+        elif chunk[openedChunks.pop()] != c:
+            return True, value[c]
     return False, reduce(lambda x, y: x * 5 + value[y], reversed(openedChunks), 0)
 
 with open("input.txt") as f:
