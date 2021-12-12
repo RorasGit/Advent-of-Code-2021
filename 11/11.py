@@ -18,7 +18,7 @@ def next_step(grid):
     for x in range(height):
         for y in range(width):
             flash(x, y, grid, flashed)
-    return sum(flashed.values()), [[0 if x > 9 else x for x in line] for line in grid]
+    return len(flashed), [[0 if x > 9 else x for x in line] for line in grid]
 
 with open("input.txt") as f:
     
