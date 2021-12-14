@@ -1,19 +1,23 @@
 import statistics as s
-import math   
+import math
 
-def msum(m, list):
-    return sum(nsum(abs(x-m)) for x in list)
+def msum(fuel, moves):
+    return sum(nsum(abs(x-fuel)) for x in moves)
 
-def nsum(n):
-    return int(n*(n+1)/2)
+def nsum(fuel):
+    return int(fuel*(fuel+1)/2)
+def main():
+    with open("input.txt", "r", encoding="utf-8") as file:
+        moves = [int(x) for x in next(file).split(",")]
+        median = int(s.median(moves))
 
-with open("input.txt") as f:
-    input = [int(x) for x in next(f).split(",")]
-    median = int(s.median(input))
-
-    floor = math.floor(s.mean(input))
-    ceil =  floor+1
+        floor = math.floor(s.mean(moves))
+        ceil =  floor+1
 
 
-    print(sum(abs(x - median) for x in input))
-    print(min(msum(floor, input), msum(ceil, input)))
+        print(sum(abs(x - median) for x in moves))
+        print(min(msum(floor, moves), msum(ceil, moves)))
+
+if __name__ == '__main__':
+    main()
+    
