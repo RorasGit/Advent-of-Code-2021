@@ -13,7 +13,7 @@ def step(nbr_of_pairs, instructions, counter, steps):
 def main():
     with open("input.txt", encoding="utf-8") as file:
 
-        template, ins = [line for line in file.read().split("\n\n")]
+        template, ins = list(file.read().split("\n\n"))
         ins = {tuple(p) : l for p, l in [line.split(" -> ") for line in ins.split("\n")]}
 
         pairs = Counter(zip(template, template[1:]))
@@ -27,4 +27,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    

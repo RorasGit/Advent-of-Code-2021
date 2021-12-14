@@ -7,6 +7,7 @@ def share_n_segments(distinct_segment, unknown_segments, number):
     for segment in unknown_segments:
         if share_n_digits(segment, distinct_segment, number):
             return segment
+    return None
 def main():
     with open("input.txt", "r", encoding="utf-8") as file:
         lines = file.readlines()

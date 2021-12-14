@@ -10,7 +10,7 @@ def get_ones(ones : list[str], larger, index = 0):
         else:
             next_zeros.append(test)
     test_case = len(next_ones) >= len(next_zeros)
-    if(test_case if larger else not test_case) :
+    if test_case if larger else not test_case :
         return get_ones(next_ones, larger, index+1)
     else :
         return get_ones(next_zeros, larger, index+1)
