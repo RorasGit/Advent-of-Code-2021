@@ -14,7 +14,7 @@ def score(line):
             return True, value[token]
     return False, reduce(lambda x, y: x * 5 + value[y], reversed(opened_chunks), 0)
 def main():
-    with open("input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
 
         scores = [score(line) for line in file.read().splitlines()]
 

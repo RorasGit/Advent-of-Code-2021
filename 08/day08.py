@@ -9,7 +9,7 @@ def share_n_segments(distinct_segment, unknown_segments, number):
             return segment
     return None
 def main():
-    with open("input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
         lines = file.readlines()
 
         segments, output = map(list, zip(*(line.split("|") for line in lines)))

@@ -15,7 +15,7 @@ def number_of_paths(graph, node, path, visit_twice = False):
 
     return count
 def main():
-    with open("input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
 
         cave_graph = nx.Graph()
         cave_graph.add_edges_from([line.strip().split("-") for line in file.readlines()])

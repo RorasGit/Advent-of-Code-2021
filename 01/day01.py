@@ -1,7 +1,7 @@
-
+import os
 
 def main():
-    with open("input.txt" , 'r', encoding='utf-8') as file :
+    with open(os.path.join(os.path.dirname(__file__),"input.txt") , 'r', encoding='utf-8') as file :
         values = file.read().splitlines()
         inc = -1
         last_value = 0

@@ -11,7 +11,7 @@ def step(nbr_of_pairs, instructions, counter, steps):
         nbr_of_pairs = new_pairs
     return nbr_of_pairs, counter
 def main():
-    with open("input.txt", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", encoding="utf-8") as file:
 
         template, ins = list(file.read().split("\n\n"))
         ins = {tuple(p) : l for p, l in [line.split(" -> ") for line in ins.split("\n")]}

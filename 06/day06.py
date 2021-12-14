@@ -1,6 +1,6 @@
 from collections import deque
 def main():
-    with open("input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
         days = 256
         state = deque([0] * 9)
 

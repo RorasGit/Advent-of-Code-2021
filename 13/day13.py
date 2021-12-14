@@ -6,7 +6,7 @@ def flip_grid(grid, value, vertical):
         new_grid[(new_x, new_y)] = True
     return new_grid
 def main():
-    with open("input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
 
         lines, instructions = list(file.read().split("\n\n"))
         instructions = [line[11:].split("=") for line in instructions.split("\n")]

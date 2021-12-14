@@ -17,7 +17,7 @@ def run_bingo (bingos, balls) :
 
 
 def main():
-    with open("input.txt", "r", encoding="utf-8") as file :
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file :
 
         balls = [int(x) for x in next(file).split(",")]
         lines = filter(None,file.read().splitlines())

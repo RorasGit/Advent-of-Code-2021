@@ -44,7 +44,7 @@ def find_basin (lowpoint, grid, height, width):
 
 
 def main():
-    with open("input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
 
         grid = []
         for line in file.read().splitlines():

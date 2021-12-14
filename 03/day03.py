@@ -15,7 +15,7 @@ def get_ones(ones : list[str], larger, index = 0):
     else :
         return get_ones(next_zeros, larger, index+1)
 def main():
-    with open("input.txt" , 'r', encoding="utf-8") as file :
+    with open(os.path.join(os.path.dirname(__file__),"input.txt" , 'r', encoding="utf-8") as file :
         values = file.read().splitlines()
         amount = dict.fromkeys(range(len(values[0])), 0)
         for val in values:
