@@ -1,31 +1,27 @@
-
 from typing import Counter
 
-def step(pairs, ins, ans):
-
-    newPairs = Counter()
-    for pair in pairs:
-        newPairs[(pair[0],ins[pair])] += pairs[pair]
-        newPairs[(ins[pair],pair[1])] += pairs[pair]
-        ans[ins[pair]] += pairs[pair]
-    return newPairs
+def step(pairs, instructions, letters, steps = 1):
+    for _ in range (steps):
+        newPairs = Counter()
+        for pair in pairs:
+            newPairs[(pair[0],instructions[pair])] += pairs[pair]
+            newPairs[(instructions[pair],pair[1])] += pairs[pair]
+            letters[instructions[pair]] += pairs[pair]
+        pairs = newPairs
+    return pairs, letters
 
 with open("input.txt") as f:
     
     template, instructions = [line for line in f.read().split("\n\n")]
     instructions = [line.split(" -> ") for line in instructions.split("\n")]
-    instructions = {tuple(s[0]) : s[1] for s in instructions}
+    instructions = {tuple(line[0]) : line[1] for line in instructions}
 
     pairs = Counter(zip(template, template[1:]))
-    ans = Counter(template)
+    letters = Counter(template)
 
-    for i in range (10):
-        pairs = step(pairs, instructions, ans)
-
-    print(max(ans.values()) - min(ans.values()))
-        
-    for i in range (30):
-        pairs = step(pairs, instructions, ans)
-
-    print(max(ans.values()) - min(ans.values()))
+    pairs, letters = step(pairs, instructions, letters, 10)
+    print(max(letters.values()) - min(letters.values()))
+    
+    pairs, letters = step(pairs, instructions, letters, 30)
+    print(max(letters.values()) - min(letters.values()))
 
