@@ -10,17 +10,21 @@ def step(nbr_of_pairs, instructions, counter, steps):
             counter[insertletter] += amt
         nbr_of_pairs = new_pairs
     return nbr_of_pairs, counter
+def main():
+    with open("input.txt", encoding="utf-8") as file:
 
-with open("input.txt", encoding="utf-8") as f:
+        template, ins = [line for line in file.read().split("\n\n")]
+        ins = {tuple(p) : l for p, l in [line.split(" -> ") for line in ins.split("\n")]}
 
-    template, ins = [line for line in f.read().split("\n\n")]
-    ins = {tuple(p) : l for p, l in [line.split(" -> ") for line in ins.split("\n")]}
+        pairs = Counter(zip(template, template[1:]))
+        lettercounter = Counter(template)
 
-    pairs = Counter(zip(template, template[1:]))
-    lettercounter = Counter(template)
+        pairs, lettercounter = step(pairs, ins, lettercounter, 10)
+        print(max(lettercounter.values()) - min(lettercounter.values()))
 
-    pairs, lettercounter = step(pairs, ins, lettercounter, 10)
-    print(max(lettercounter.values()) - min(lettercounter.values()))
+        pairs, lettercounter = step(pairs, ins, lettercounter, 30)
+        print(max(lettercounter.values()) - min(lettercounter.values()))
 
-    pairs, lettercounter = step(pairs, ins, lettercounter, 30)
-    print(max(lettercounter.values()) - min(lettercounter.values()))
+if __name__ == '__main__':
+    main()
+    
