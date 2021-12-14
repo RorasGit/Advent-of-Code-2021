@@ -1,4 +1,5 @@
 from collections import Counter
+import os
 
 def share_n_digits(digit_one, digit_two, number):
     return sum((Counter(digit_one) & Counter(digit_two)).values()) == number
@@ -9,7 +10,7 @@ def share_n_segments(distinct_segment, unknown_segments, number):
             return segment
     return None
 def main():
-    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt"), "r", encoding="utf-8") as file:
         lines = file.readlines()
 
         segments, output = map(list, zip(*(line.split("|") for line in lines)))

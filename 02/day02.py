@@ -1,5 +1,6 @@
+import os
 def main():
-    with open(os.path.join(os.path.dirname(__file__),"input.txt" , 'r', encoding='utf-8') as file :
+    with open(os.path.join(os.path.dirname(__file__),"input.txt") , 'r', encoding='utf-8') as file :
         values = file.read().splitlines()
         pos = 0
         depth = 0

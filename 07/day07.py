@@ -1,5 +1,6 @@
 import statistics as s
 import math
+import os
 
 def msum(fuel, moves):
     return sum(nsum(abs(x-fuel)) for x in moves)
@@ -7,7 +8,7 @@ def msum(fuel, moves):
 def nsum(fuel):
     return int(fuel*(fuel+1)/2)
 def main():
-    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt"), "r", encoding="utf-8") as file:
         moves = [int(x) for x in next(file).split(",")]
         median = int(s.median(moves))
 

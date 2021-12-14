@@ -1,5 +1,6 @@
 
 from typing import Counter
+import os
 
 adjecant =  [(1,0),(-1,0), (0,1), (0,-1), (1,1), (-1,-1), (1,-1), (-1,1)]
 
@@ -20,7 +21,7 @@ def next_step(grid,  height, width):
             flash(pos_x, pos_y, grid, flashed, height, width)
     return len(flashed), [[0 if x > 9 else x for x in line] for line in grid]
 def main():
-    with open(os.path.join(os.path.dirname(__file__),"input.txt", "r", encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"input.txt"), "r", encoding="utf-8") as file:
 
         octopuses  = [[int(x) for x in line] for line in file.read().splitlines()]
         height = len(octopuses)
