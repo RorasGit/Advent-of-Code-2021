@@ -4,38 +4,41 @@ from typing import Counter
 adjecant =  [(1,0),(-1,0), (0,1), (0,-1), (1,1), (-1,-1), (1,-1), (-1,1)]
 
 
-def flash(x, y, grid, flashed):
-    if grid[x][y] > 9 and not flashed[(x,y)] :
-        flashed[(x, y)] = True
-        for a, b in [(s[0]+x, s[1]+y) for s in adjecant] :
-            if(0 <= a < width and 0 <= b < height):
-                grid[a][b] +=1
-                flash(a, b, grid, flashed)
+def flash(pos_x, pos_y, grid, flashed, height, width):
+    if grid[pos_x][pos_y] > 9 and not flashed[(pos_x,pos_y)] :
+        flashed[(pos_x, pos_y)] = True
+        for pos_a, pos_b in [(dir[0]+pos_x, dir[1]+pos_y) for dir in adjecant] :
+            if 0 <= pos_a < width and 0 <= pos_b < height:
+                grid[pos_a][pos_b] +=1
+                flash(pos_a, pos_b, grid, flashed, height, width)
 
-def next_step(grid):
+def next_step(grid,  height, width):
     grid = [[x+1 for x in line] for line in grid]
     flashed = Counter()
-    for x in range(height):
-        for y in range(width):
-            flash(x, y, grid, flashed)
+    for pos_x in range(height):
+        for pos_y in range(width):
+            flash(pos_x, pos_y, grid, flashed, height, width)
     return len(flashed), [[0 if x > 9 else x for x in line] for line in grid]
+def main():
+    with open("input.txt", "r", encoding="utf-8") as file:
 
-with open("input.txt") as f:
-    
-    octopuses  = [[int(x) for x in line] for line in f.read().splitlines()]
-    height = len(octopuses)
-    width = len(octopuses[0])
-    
-    total = 0
-    for steps in range(1, 101):
-        flashes, octopuses = next_step(octopuses)
-        total += flashes
+        octopuses  = [[int(x) for x in line] for line in file.read().splitlines()]
+        height = len(octopuses)
+        width = len(octopuses[0])
 
-    print(total)
-    while True:
-        steps+=1
-        flashes, octopuses = next_step(octopuses)
-        if(flashes == 100):
-            break
-        
-    print(steps)
+        total = 0
+        for steps in range(1, 101):
+            flashes, octopuses = next_step(octopuses, height, width)
+            total += flashes
+
+        print(total)
+        while True:
+            steps+=1
+            flashes, octopuses = next_step(octopuses, height, width)
+            if flashes == 100:
+                break
+
+        print(steps)
+
+if __name__ == '__main__':
+    main()
