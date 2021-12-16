@@ -1,6 +1,5 @@
 from typing import Counter
 import os
-
 def step(nbr_of_pairs, instructions, counter, steps):
     for _ in range (steps):
         new_pairs = Counter()
@@ -13,18 +12,18 @@ def step(nbr_of_pairs, instructions, counter, steps):
     return nbr_of_pairs, counter
 def main():
     with open(os.path.join(os.path.dirname(__file__),"input.txt"), encoding="utf-8") as file:
-
-        template, ins = list(file.read().split("\n\n"))
-        ins = {tuple(p) : l for p, l in [line.split(" -> ") for line in ins.split("\n")]}
-
+        
+        template, _, *rules = list(file.read().split("\n"))
+        rules = {tuple(p) : l for p, l in [line.split(" -> ") for line in rules]}
         pairs = Counter(zip(template, template[1:]))
-        lettercounter = Counter(template)
+        chars = Counter(template)
 
-        pairs, lettercounter = step(pairs, ins, lettercounter, 10)
-        print(max(lettercounter.values()) - min(lettercounter.values()))
+        pairs, chars = step(pairs, rules, chars, 10)
+        print(max(chars.values()) - min(chars.values()))
 
-        pairs, lettercounter = step(pairs, ins, lettercounter, 30)
-        print(max(lettercounter.values()) - min(lettercounter.values()))
+        pairs, chars = step(pairs, rules, chars, 30)
+        print(max(chars.values()) - min(chars.values()))
+
 
 if __name__ == '__main__':
     main()

@@ -10,8 +10,7 @@ def number_of_paths(graph, node, path, visit_twice = False):
         if neighbour in path and not neighbour.isupper():
             if neighbour == "start" or not visit_twice:
                 continue
-            else:
-                neighbour_visit_twice = False
+            neighbour_visit_twice = False
         count += number_of_paths(graph, neighbour, path + [neighbour], neighbour_visit_twice)
 
     return count
