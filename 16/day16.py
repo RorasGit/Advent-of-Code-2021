@@ -1,7 +1,11 @@
 import os
 from collections import deque
-from typing import Deque
+from operator import gt, lt, eq
 from math import prod
+from time import time
+
+ops = [sum, prod, min, max]
+comps = [gt, lt, eq]
 
 def sum_version(packets):
     if isinstance(packets, list):
@@ -10,25 +14,12 @@ def sum_version(packets):
         return packets[0] + sum_version(packets[2])
     return packets[0]
 
-def calc_packet(packet):
-    T = packet[1]
-    value = packet[2]
-    if T == 0:
-        return sum(calc_packet(subpacket) for subpacket in value)
-    if T == 1:
-        return prod(calc_packet(subpacket) for subpacket in value)
-    if T == 2:
-        return min(calc_packet(subpacket) for subpacket in value)
-    if T == 3:
-        return max(calc_packet(subpacket) for subpacket in value)
+def calc_packet(_, T, value):
     if T == 4:
         return value
-    if T == 5:
-        return int(calc_packet(value[0]) > calc_packet(value[1]))
-    if T == 6:
-        return int(calc_packet(value[0]) < calc_packet(value[1]))
-    if T == 7:
-        return int(calc_packet(value[0]) == calc_packet(value[1]))
+    if T < 4:
+        return ops[T](calc_packet(*p) for p in value)
+    return int(comps[T-5](calc_packet(*value[0]), calc_packet(*value[1])))
 
 def unpack_packet(packet: deque):
     V = int("".join([packet.popleft() for _ in range(3)]), 2)
@@ -36,10 +27,11 @@ def unpack_packet(packet: deque):
 
     if T == 4:
         value = ""
-        lastbit = "1"
-        while lastbit == "1":
-            lastbit = packet.popleft()
+        while True:
+            lastgroup = packet.popleft()
             value += "".join([packet.popleft() for _ in range(4)])
+            if lastgroup != "1":
+                break
         return (V, T, int(value,2))
 
     I = int(packet.popleft(), 2)
@@ -65,8 +57,11 @@ def main():
 
         packet = unpack_packet(binary_packet)
 
-        print(sum_version(packet))
-        print(calc_packet(packet))
 
+        print(sum_version(packet))
+        print(calc_packet(*packet))
 if __name__ == '__main__':
+    start = time()
     main()
+    end = time()
+    print(f"{(end-start)*1000} ms")
