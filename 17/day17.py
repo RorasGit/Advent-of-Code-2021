@@ -1,42 +1,79 @@
 import os
 import math
+from time import time
 
-def checkvelocity(speed, goal):
-    maxy = 0
-    pos = (0,0)
-    while pos[0] < goal[0][1] and pos[1] > goal[1][0]:
-        pos, speed = step(pos, speed)
-        if pos[1] > maxy:
-            maxy = pos[1]
-        if goal[0][1] >= pos[0] >= goal[0][0] and goal[1][0] <= pos[1] <= goal[1][1]:
-            return True, maxy
+def nsum(number):
+    return number*(number+1)/2
+def checkvelocity(velocity_x, velocity_y, xmin, xmax, ymin, ymax):
+    pos_x = 0
+    pos_y = 0
+    maxh = velocity_y*(velocity_y+1)//2
+    if velocity_y > 0:
+        new_x_velocity = max(0, velocity_x-velocity_y*2-1)
+        pos_x = nsum(velocity_x) - nsum(new_x_velocity)
+        velocity_x = new_x_velocity
+        velocity_y = -velocity_y-1
+    while pos_x < xmax and pos_y > ymin:
+        pos_x = pos_x+velocity_x
+        pos_y = pos_y+velocity_y
+        if xmax >= pos_x >= xmin and ymax >= pos_y >= ymin:
+            return True, maxh
+        velocity_x = velocity_x - (velocity_x>0) - (velocity_x<0)
+        velocity_y = velocity_y-1
+    return False, maxh
+def checkvelocity2(velocity_x, velocity_y, xmin, xmax, ymin, ymax):
+    pos_x = 0
+    pos_y = 0
+    maxh = velocity_y*(velocity_y+1)//2
+    
+    if velocity_y > 0:
+        new_x_velocity = max(0, velocity_x-velocity_y*2-1)
+        pos_x = nsum(velocity_x) - nsum(new_x_velocity)
+        velocity_x = new_x_velocity
+        velocity_y = -velocity_y-1
+    v = abs(velocity_x)
+    print(v)
+    x1 = (-(2*v-1)+math.sqrt(4*v**2 + 4*v-4*xmax-1))/-2
+    x2 = (-(2*v-1)-math.sqrt(4*v**2 + 4*v-4*xmax-1))/-2
 
-    return False, maxy
+    print(nsum(v) - nsum(v-x1))
+    print(nsum(v) - nsum(v-x2))
+    print(x1, x2)
 
-def step(pos, speed):
-    drag = lambda a:(a>0) - (a<0)
-    return (pos[0]+speed[0], pos[1]+speed[1]), (speed[0] - drag(speed[0]), speed[1]- 1 )
-
-def minx(goal):
-    return math.floor(math.sqrt(goal[0][0]*2))
+    while pos_x < xmax and pos_y > ymin:
+        pos_x = pos_x+velocity_x
+        pos_y = pos_y+velocity_y
+        if xmax >= pos_x >= xmin and ymax >= pos_y >= ymin:
+            return True, maxh
+        velocity_x = velocity_x - (velocity_x>0) - (velocity_x<0)
+        velocity_y = velocity_y-1
+    return False, maxh
+def minx(xmin):
+    return math.floor(math.sqrt(xmin*2))
 
 def main():
-    with open(os.path.join(os.path.dirname(__file__),"input.txt"), encoding="utf-8") as file:
+    with open(os.path.join(os.path.dirname(__file__),"test.txt"), encoding="utf-8") as file:
 
         _,_,xpos,ypos = file.read().split()
-        goal = ([int(a) for a in xpos[2:-1].split("..")],[int(a) for a in ypos[2:].split("..")])
-
+        xmin,xmax =[int(a) for a in xpos[2:-1].split("..")]
+        ymin,ymax =[int(a) for a in ypos[2:].split("..")]
         solutions = []
-        for i in range(minx(goal),goal[0][1]+1):
-            for j in range(goal[1][0],-goal[1][0]):
-                inrange, height = checkvelocity((i, j), goal)
+
+        print(checkvelocity2(17, -4, xmin,xmax, ymin,ymax))
+
+        """
+        for velocity_x in range(minx(xmin),xmax+1):
+            for velocity_y in range(ymin,-ymin):
+                inrange, height = checkvelocity(velocity_x, velocity_y, xmin,xmax, ymin,ymax)
                 if inrange:
-                    solutions.append((i,j, height))
+                    solutions.append(height)
 
-        print(max(solutions, key=lambda sol: sol[2]))
+        print(max(solutions))
         print(len(solutions))
-
-
+"""
 
 if __name__ == '__main__':
+    start = time()
     main()
+    end = time()
+    print(f"{(end-start)*1000} ms")
